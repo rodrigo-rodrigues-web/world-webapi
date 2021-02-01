@@ -2,8 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.json({message:  'Web Api working!'});
+router.get('/', async (req, res, next) => {
+  try {
+    const results = await global.db.selectCountries();
+    res.render('index', {results, title: 'World Dataset'})
+  } catch (error) {
+    res.status(500).json({error:error.message});
+  }
 });
 
 /* GET Countries page. */
