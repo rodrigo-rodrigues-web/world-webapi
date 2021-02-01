@@ -20,8 +20,66 @@ async function connect(){
 
 async function selectCountries(){
     const conn = await connect();
-    const [rows] = await conn.query('SELECT name, Region, Population, HeadOfState FROM country;');
+    const [rows] = await conn.query('SELECT name, code, Region, Population, HeadOfState FROM country;');
     return rows;
 }
 
-module.exports = { selectCountries }
+async function selectCountry(code){
+    const conn = await connect();
+    const [rows] = await conn.query('SELECT name, code, Region, Population, HeadOfState FROM country WHERE code = ?', code);
+    return rows && rows.length > 0 ? rows[0]:{};
+}
+
+async function updateCountry(code, country){
+    let sql = 'UPDATE country SET';
+    const props = Object.entries(country);
+
+    for (let i = 0; i < props.length; i++) {
+        const item = props[i];
+        
+        if (i === props.length - 1) { // if last element
+            sql += ` ${item[0]}=? WHERE code=?`;
+        }
+        else{
+            sql += ` ${item[0]}=?,`;
+        }
+    }
+    let values = props.map(p => p[1]);
+    values.push(code);
+
+    const conn = await connect();
+    return await conn.query(sql, values);
+    
+}
+
+async function insertCountry(body){
+    const props = Object.entries(body);
+
+    let sql = 'INSERT INTO country (';
+    let valuePlaceholder = '';
+    for (let i = 0; i < props.length; i++) {
+        const item = props[i];        
+
+        if (i === props.length - 1) { // if last element
+            sql += ` ${item[0]}) VALUES (`;
+            valuePlaceholder += '?)';
+        }
+        else{
+            sql += ` ${item[0]},`;
+            valuePlaceholder += '?,';
+        }
+    }
+    sql += valuePlaceholder;
+    const values = props.map(p => p[1]);
+
+    const conn = await connect();
+    return await conn.query(sql, values);
+    
+}
+
+async function deleteCountry(code){
+    let sql = 'DELETE FROM country WHERE code = ?;'
+    const conn = await connect();
+    return await conn.query(sql, code);
+}
+module.exports = { selectCountries, selectCountry, updateCountry, insertCountry, deleteCountry }
