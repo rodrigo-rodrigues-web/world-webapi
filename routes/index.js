@@ -67,9 +67,14 @@ router.patch('/api/country/:code', async (req, res) => {
 router.delete('/api/country/:code', async (req, res) => {
   const code = req.params.code;
   try {
-    await global.db.deleteCountry(code);
-
-    res.json({message: `Country ${code} has been excluded successfully`});
+    const result = await global.db.deleteCountry(code);
+    
+    if(result[0].affectedRows){
+      res.json({message: `Country ${code} has been excluded successfully`});
+    }
+    else{
+      res.status(404).json({message: "Country not registered"});
+    }
 
   } catch (error) {
     res.status(500).json({error:error.message});

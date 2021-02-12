@@ -3,14 +3,69 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/css/style.css' />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    
+    <div class="container mb-3 mt-3">
+      <h1><%= title %></h1>
+      <p>Welcome to <%= title %></p>
+      <table id="example" class="display table table-stripped table-bordered">
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Code</td>
+            <td>Region</td>
+            <td>Population</td>
+            <td>Head Of State</td>
+            <td>Actions</td>
+          </tr>
+       </thead>
+      <tbody>
+        <% if(!results || results.length === 0){ %> 
+          <tr>
+            <td colspan="5">Country information is missing.</td>
+          </tr>
+          <%            
+        } else {
+          results.forEach(country => { %>
+            <tr>
+              <td> <%=country.name %> </td>
+              <td> <%=country.code %> </td>
+              <td> <%=country.Region %> </td>
+              <td> <%=country.Population %> </td>
+              <td> <%=country.HeadOfState %> </td>
+              <td> <i class="fa fa-trash-o text-primary" style="font-size:24px"></i> </td>
+            </tr>
+            <%
+          });
+        }
+        %> 
+      </tbody>
+      <tfoot>
+        <tr>
+            <td>Name</td>
+            <td>Code</td>
+            <td>Region</td>
+            <td>Population</td>
+            <td>Head Of State</td>
+          </tr>
+      </tfoot>
+      </table>
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <!-- bootstrap 4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
+    </script>
   </body>
 </html>
