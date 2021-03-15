@@ -1,6 +1,38 @@
 var express = require('express');
 var router = express.Router();
+const jwt = require('jsonwebtoken');
+const { route } = require('./users');
+const SECRET = 'Welcome1234';
 
+router.post('/login', (req, res) => {
+  if (req.body.user === 'rodrigo' && req.body.password === '123') {
+    const token = jwt.sign({userId: 1}, SECRET, {expiresIn: 300}) ;
+    return res.json({auth: true, token});
+  }
+
+  res.status(401).end();
+} );
+
+function verifyJWT(req, res, next){
+  const token = req.headers['x-access-token'];
+  const index = blacklist.findIndex(item => item==token); // search if token is in the array blacklist
+
+  if(index !== -1) return res.status(401).end();
+
+  jwt.verify(token, SECRET, (err, decoded) => {
+    if(err) return res.status(401).end();
+
+    req.userId = decoded.userId;
+
+    next();
+  })
+}
+const blacklist = [];
+
+router.post('/logout', (req, res) => {
+  blacklist.push(req.headers['x-access-token']);
+  res.end();
+})
 /* GET home page. */
 router.get('/', async (req, res, next) => {
   try {
@@ -12,9 +44,10 @@ router.get('/', async (req, res, next) => {
 });
 
 /* GET Countries page. */
-router.get('/api/countries', async (req, res) => {
+router.get('/api/countries', verifyJWT, async (req, res) => {
 
   try {
+    console.log("User ", req.userId, " made this api call");
     const results = await global.db.selectCountries();
     res.json(results);
   } catch (error) {
