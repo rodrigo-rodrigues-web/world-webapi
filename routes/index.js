@@ -55,7 +55,7 @@ router.get('/api/countries', verifyJWT, async (req, res) => {
   }
 });
 
-router.get('/api/country/:code', async (req, res) => {
+router.get('/api/country/:code', verifyJWT, async (req, res) => {
   const code = req.params.code;
   
   try {
@@ -66,7 +66,7 @@ router.get('/api/country/:code', async (req, res) => {
   }
 });
 
-router.post('/api/country', async (req, res) => {
+router.post('/api/country', verifyJWT, async (req, res) => {
   
   const body = req.body;
   try {
@@ -79,7 +79,7 @@ router.post('/api/country', async (req, res) => {
   
 });
 
-router.patch('/api/country/:code', async (req, res) => {
+router.patch('/api/country/:code', verifyJWT, async (req, res) => {
   const code = req.params.code;
   const country = {};
 
@@ -97,7 +97,7 @@ router.patch('/api/country/:code', async (req, res) => {
   }
 });
 
-router.delete('/api/country/:code', async (req, res) => {
+router.delete('/api/country/:code', verifyJWT, async (req, res) => {
   const code = req.params.code;
   try {
     const result = await global.db.deleteCountry(code);
