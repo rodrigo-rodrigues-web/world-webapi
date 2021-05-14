@@ -43,6 +43,62 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/new', async (req, res, next) => {
+  res.render('new', {title: 'Register', result: {}, action: '/new/'});
+});
+
+router.post('/new', async (req, res) => {
+  let country = req.body;
+
+  if(!parseInt(country.population)) {
+    res.send("Population must be a number");
+    return
+  }
+  try {
+    const result = await global.db.insertCountry(country);
+    res.redirect('/');
+  } catch (error) {
+    res.status(500).json({error:error.message});
+  }
+});
+
+router.get('/edit/:code', async (req, res, next) => {
+  const code = req.params.code;
+  
+  try {
+    const result = await global.db.selectCountry(code);
+    res.render('new', { title: 'Edit a Country', result, action: '/edit/' + code });
+  } catch (error) {
+    res.redirect('/?error=' + error);
+  }
+  
+});
+
+router.post('/edit/:code', async (req, res) => {
+  const name = req.body.name;
+  const code = req.params.code;
+  const region = req.body.region;
+  const population = parseInt(req.body.population);
+  const HeadOfState = req.body.HeadOfState;
+  // console.log('OBJECT ', {name, region, population, HeadOfState}.HeadOfState);
+  try {
+    await global.db.updateCountry(code, {name, region, population, HeadOfState});
+    res.redirect('/?edit=true');
+  } catch (error) {
+    res.redirect('/?error=' + error);
+  }
+});
+
+router.get('/delete/:code', async (req, res) => {
+  const code = req.params.code;
+  try {
+    await global.db.deleteCountry(code);
+    res.redirect('/?delete=true');
+  } catch (error) {
+    res.redirect('/?error=' + error);
+  }
+});
+
 /* GET Countries page. */
 router.get('/api/countries', verifyJWT, async (req, res) => {
 

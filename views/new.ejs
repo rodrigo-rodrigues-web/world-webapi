@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div class="container">
+        <h2><%= title %></h2>
+        <form action="<%= action %>" method="POST" role="form">
+          <div id="alertListagem" class="alert alert-success">SUCCESS</div>
+          <div id="alertCadastro" class="alert alert-danger">ERROR</div>
+
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="<%= result.name %>">
+          </div>          
+          <!-- <div class="form-group">
+            <label for="code">Country Code:</label>
+            <input type="text" class="form-control" id="code" placeholder="Enter country code" name="code" value="<%= result.code %>">
+          </div> -->
+          <div class="form-group">
+            <label for="region">Country Region:</label>
+            <input type="text" class="form-control" id="region" placeholder="Enter country region" name="region" value="<%= result.Region %>">
+          </div>
+          <div class="form-group">
+            <label for="population">Country Population:</label>
+            <input type="text" class="form-control" id="population" placeholder="Enter country population" name="population" value="<%= result.Population %>">
+          </div>
+          <div class="form-group">
+            <label for="head">Head of State:</label>
+            <input type="text" class="form-control" id="head" placeholder="Enter Head of State" name="HeadOfState" value="<%= result.HeadOfState %>">
+          </div>
+          <div class="form-group form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" name="remember"> Remember me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    
+    <script src="js/scripts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <!-- bootstrap 4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+
+  </body>
+</html>

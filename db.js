@@ -21,6 +21,7 @@ async function connect(){
 async function selectCountries(){
     const conn = await connect();
     const [rows] = await conn.query('SELECT name, code, Region, Population, HeadOfState FROM country;');
+     
     return rows;
 }
 
@@ -33,7 +34,6 @@ async function selectCountry(code){
 async function updateCountry(code, country){
     let sql = 'UPDATE country SET';
     const props = Object.entries(country);
-
     for (let i = 0; i < props.length; i++) {
         const item = props[i];
         
@@ -45,11 +45,14 @@ async function updateCountry(code, country){
         }
     }
     let values = props.map(p => p[1]);
-    values.push(code);
-
-    const conn = await connect();
-    return await conn.query(sql, values);
     
+    values.push(code);
+    try {
+        const conn = await connect();
+        return await conn.query(sql, values);
+    } catch (error) {
+        console.log(error.message);
+    }     
 }
 
 async function insertCountry(body){
@@ -78,8 +81,13 @@ async function insertCountry(body){
 }
 
 async function deleteCountry(code){
-    let sql = 'DELETE FROM country WHERE code = ?;'
     const conn = await connect();
+
+    await conn.query('DELETE FROM city WHERE CountryCode = ?;', code)
+    await conn.query('DELETE FROM language WHERE CountryCode = ?;', code)
+    
+    let sql = 'DELETE FROM country WHERE code = ?;'
+    
     return await conn.query(sql, code);
 }
 module.exports = { selectCountries, selectCountry, updateCountry, insertCountry, deleteCountry }
