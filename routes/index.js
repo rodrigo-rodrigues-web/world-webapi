@@ -56,7 +56,8 @@ router.post('/new', async (req, res) => {
   }
   try {
     const result = await global.db.insertCountry(country);
-    res.redirect('/');
+    res.redirect('/?new=true');
+    
   } catch (error) {
     res.status(500).json({error:error.message});
   }
