@@ -7,9 +7,9 @@ async function connect(){
     }
 
     const connection = mysql.createConnection({
-        host: 'localhost',
+        host: '192.168.0.24',
         port: 3306,
-        user: 'root',
+        user: 'demo',
         password: 'Welcome1234',
         database: 'world'
     });
