@@ -20,7 +20,7 @@ async function connect(){
 
 async function selectCountries(){
     const conn = await connect();
-    const [rows] = await conn.query('SELECT name, code, Region, Population, HeadOfState FROM country;');
+    const [rows] = await conn.query('SELECT name, code, Region, Population, HeadOfState FROM country ORDER BY name;');
      
     return rows;
 }
