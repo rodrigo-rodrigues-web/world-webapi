@@ -33,8 +33,8 @@ module.exports = function(passport){
 
     // definir a estratégia de autenticação em si
     passport.use(new LocalStrategy({
-        usernameField: 'username',
-        passwordField: 'password'
+        usernameField: 'inputUsername',
+        passwordField: 'inputPassword'
     },
         (username, password, done) => {
             try {

@@ -23,6 +23,7 @@ app.set('view engine', 'ejs');
 
 // Aqui estou carregando nosso módulo auth.js passando o objeto passport pra ele configurar a estratégia de autenticação
 require('./auth')(passport);
+// Depois digo para o express-session qual secret ele vai usar para algumas criptografias internas e quanto tempo de vida o cookie vai ter
 app.use(session({  
   secret: '123',//configure um segredo seu aqui,
   resave: false,
@@ -38,12 +39,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 app.use('/login', loginRouter);
-app.use('/new', newRouter);
+// app.use('/users', usersRouter);
+app.use('/', authenticationMiddleware, indexRouter);
+app.use('/new', authenticationMiddleware, newRouter);
 app.use('/api', apiRouter);
-app.use('/edit', editRouter);
+app.use('/edit', authenticationMiddleware, editRouter);
 
 // Chamaremos essa função authenticationMiddleware toda vez que uma requisição solicitar uma página que não seja as públicas (como login).
 function authenticationMiddleware(req, res, next) {
