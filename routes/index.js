@@ -3,7 +3,7 @@ var router = express.Router();
 const jwt = require('jsonwebtoken');
 //  const { route } = require('./users');
 const SECRET = 'Welcome1234';
-const passport = require('passport');
+// const passport = require('passport');
 
 /* GET home page. */
 router.get('/', async (req, res, next) => {
@@ -23,6 +23,11 @@ router.get('/delete/:code', async (req, res) => {
   } catch (error) {
     res.redirect('/?error=' + error);
   }
+});
+
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/login');
 });
 
 module.exports = router;

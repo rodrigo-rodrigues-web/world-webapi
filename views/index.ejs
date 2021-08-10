@@ -54,7 +54,11 @@
                   <td colspan="6">
                       <a href="/new" role="button" id="Register" class="btn btn-primary">Register</a>
                   </td>
+                                    
                 </tr>
+                <tr><td colspan="6">
+                    <a href="/logout" role="button" id="logout" class="btn btn-primary">Logout</a>
+                  </td></tr>
           </tfoot>
 
       </table>
@@ -69,7 +73,7 @@
     <script>
         $(document).ready(function() {
             $('#example').DataTable({
-              "pageLength": 25
+              "pageLength": 10
             });
         } );
     </script>

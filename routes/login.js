@@ -4,6 +4,7 @@ const passport = require('passport');
 
 /* GET login page. */
 router.get('/', (req, res, next) => {
+  
     if (req.query.fail)
         res.render('login', { message: 'Usuário e/ou senha incorretos!', title: 'Login' });
     else
